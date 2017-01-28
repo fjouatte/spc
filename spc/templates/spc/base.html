@@ -1,0 +1,49 @@
+{% load i18n %}
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<!DOCTYPE html>
+
+<html lang="fr">
+
+<head>
+
+    <!-- <link rel="stylesheet" href="/media/css/style.css" /> -->
+
+   <title>{% block title %}Spam Championship{% endblock %}</title>
+
+</head>
+
+<body>
+
+<header>Spam Championship</header>
+
+    <nav>
+
+       {% block nav %}
+
+       <ul>
+
+            <li><a href="/">Accueil</a></li>
+
+            <li><a href="/blog/">Blog</a></li>
+
+            <li><a href="/contact/">Contact</a></li>
+
+       </ul>
+
+       {% endblock %}
+
+   </nav>
+
+   <section id="content">
+
+       {% block content %}{% endblock %}
+
+   </section>
+
+<footer>&copy; Spam Team 2017</footer>
+
+</body>
+
+</html>
