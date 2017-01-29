@@ -1,8 +1,11 @@
 {% extends "spc/base.html" %}
 {% block content %}
     <h2> Règlement </h2>
-
-    <p>
-    {{ rule.content|safe }}
-    </p>
+    <div class="rules box-shadow">
+        {% if rule %}
+            {{ rule.content|safe }}
+        {% else %}
+            Le règlement n'est pas encore publié
+        {% endif %}
+    </div>
 {% endblock %}

@@ -1,11 +1,7 @@
 from django import forms
 from django.contrib import admin
-from django.db import models
-from spc.models import Rules, User
+from spc.models import Rule, User
 from tinymce.widgets import TinyMCE
-from django.conf import settings
-from django.contrib.auth.forms import UserCreationForm
-
 
 
 class LoginForm(forms.Form):
@@ -19,7 +15,7 @@ class UserRegistrationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'email')
+        fields = ('username', 'first_name', 'email', 'login_trackmania', 'pseudo')
 
     def clean_password2(self):
         cd = self.cleaned_data
@@ -34,15 +30,15 @@ class UserEditForm(forms.ModelForm):
         fields = ('first_name', 'last_name', 'email')
 
 
-class RulesForm(forms.ModelForm):
+class RuleForm(forms.ModelForm):
 
     content = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 30}))
 
     class Meta:
-        model = Rules
-        fields = ('content', )
+        model = Rule
+        fields = ('content', 'active')
 
 
-class RulesFormAdmin(admin.ModelAdmin):
-    model = RulesForm
-    fields = ('content', )
+class RuleFormAdmin(admin.ModelAdmin):
+    model = RuleForm
+    fields = ('content', 'active')

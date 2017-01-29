@@ -1,0 +1,33 @@
+{% extends "spc/base.html" %}
+{% block content %}
+    <h2> Editions passées </h2>
+    {% for old_edition in old %}
+        <div class="edition">
+            <h3>Edition {{ old_edition.numero }}</h3>
+        </div>
+    {% empty %}
+        <div class="edition">
+            <h4> Aucune édition n'est encore passée </h4>
+        </div>
+    {% endfor %}
+    <h2> Editions à venir </h2>
+    {% for new_edition in new %}
+        <div class="edition">
+            <a href="/edition/{{ new_edition.id }}"><h4>Edition {{ new_edition.numero }}</h4></a>
+        </div>
+    {% empty %}
+        <div class="edition">
+            <h4> Aucune édition n'est à venir </h4>
+        </div>
+    {% endfor %}
+    <h2> Edition en cours </h2>
+    {% for current_edition in current %}
+        <div class="edition">
+            <h3>Edition {{ current_edition.numero }}</h3>
+        </div>
+    {% empty %}
+        <div class="edition">
+            <h4> Aucune édition n'est en cours </h4>
+        </div>
+    {% endfor %}
+{% endblock %}

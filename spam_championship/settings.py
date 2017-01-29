@@ -105,6 +105,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = 'spc.User'
+
+LOGOUT_REDIRECT_URL = '/logged_out'
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/

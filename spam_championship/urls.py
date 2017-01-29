@@ -21,10 +21,9 @@ from spc import views as spc_views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', spc_views.home),
-    url(r'^edition/', spc_views.edition),
+    url(r'^editions/', spc_views.editions),
+    url(r'^edition/(?P<pk>\d+)$', spc_views.LireEdition.as_view()),
     url(r'^rules/', spc_views.rules),
-    url(r'^accounts/login/$', auth_views.login, {'template_name': 'login.html'}, name='login'),
-    url(r'^accounts/logout/$', auth_views.logout, {'template_name': 'logout.html'}, name='logout'),
     url(r'^tinymce/', include('tinymce.urls')),
     url(r'^login/$', spc_views.user_login, name='login'),
 
@@ -36,6 +35,8 @@ urlpatterns = [
     url(r'^login/$', auth_views.login, name='login'),
     url(r'^logout/$', auth_views.logout, name='logout'),
     url(r'^logout-then-login/$', auth_views.logout_then_login, name='logout_then_login'),
+    url(r'^logged_out/', spc_views.logged_out, name='logged_out'),
+
 
     # change password urls
     url(r'^password-change/$', auth_views.password_change, name='password_change'),

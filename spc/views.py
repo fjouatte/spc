@@ -1,38 +1,37 @@
 from datetime import datetime
-from django.contrib.auth.forms import PasswordResetForm
-from django.shortcuts import render, redirect
-from django.views.generic import CreateView
-from spc.models import Edition, Rules, User
-from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
 from django.contrib import messages
-from django.views.decorators.http import require_POST
-from .forms import LoginForm, UserRegistrationForm, UserEditForm
-from spc.decorators import ajax_required
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
+from django.shortcuts import render
+from django.views.generic import DetailView
+from spc.forms import LoginForm, UserRegistrationForm, UserEditForm
+from spc.models import Edition, Rule
+
 
 def home(request):
     return render(request, 'spc/home.html', locals())
 
-def rules(request):
-    rule = Rules.objects.get(id=1)
-    return render(request, 'spc/rules.html', {'rule': rule})
 
-def edition(request):
+def rules(request):
+    rule = Rule.objects.filter(active=True)
+    return render(request, 'spc/rules.html', {'rule': rule[0]})
+
+
+def editions(request):
     old = Edition.objects.filter(date_fin__lte=datetime.now())
     new = Edition.objects.filter(date_debut__gte=datetime.now())
     current = Edition.objects.filter(date_debut__lte=datetime.now()).filter(date_fin__gte=datetime.now())
     return render(
         request,
-        'spc/edition.html',
+        'spc/editions.html',
         {
             'old': old,
             'new': new,
             'current': current,
         }
     )
+
 
 def user_login(request):
     if request.method == 'POST':
@@ -43,7 +42,7 @@ def user_login(request):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    return HttpResponse('Authenticated successfully')
+                    return render(request, 'spc/home.html', {})
                 else:
                     return HttpResponse('Disabled account')
             else:
@@ -51,6 +50,10 @@ def user_login(request):
     else:
         form = LoginForm()
     return render(request, 'spc/login.html', {'form': form})
+
+
+def logged_out(request):
+    return render(request, 'spc/logged_out.html', {})
 
 
 def register(request):
@@ -85,3 +88,10 @@ def edit(request):
     else:
         user_form = UserEditForm(instance=request.user)
     return render(request, 'spc/edit.html', {'user_form': user_form})
+
+
+class LireEdition(DetailView):
+
+    context_object_name = "edition"
+    model = Edition
+    template_name = "spc/edition.html"
