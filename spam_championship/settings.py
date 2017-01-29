@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'tinymce',
     'spc',
 ]
 
@@ -122,4 +123,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATIC_URL = '/static/'
+
+# TINYMCE
+
+
+TINYMCE_JS_ROOT = 'tinymce/js/'
+TINYMCE_JS_URL = os.path.join(TINYMCE_JS_ROOT, 'tinymce/tinymce.min.js')
+TINYMCE_DEFAULT_CONFIG = {
+        'plugins': 'advlist autolink lists link image charmap print preview hr anchor pagebreak searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking save table contextmenu directionality emoticons template paste textcolor colorpicker textpattern imagetools codesample toc',
+}
+TINYMCE_SPELLCHECKER = True
