@@ -1,3 +1,44 @@
 .logo {
     height: 100%;
 }
+
+html {
+    height: 100%;
+    box-sizing: border-box;
+}
+
+body {
+    position: relative;
+    margin: 0;
+    padding-bottom: 8rem;
+    min-height: 100%;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+}
+
+.footer {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 1rem;
+    background-color: #efefef;
+    text-align: center;
+}
+
+.joueurs {
+    margin-top: 5rem;
+}
+
+.box-shadow {
+    background-color: white;
+    box-shadow: 1px 1px 5px #bbbbbb;
+    padding: 1%;
+}
+
+.maps {
+    margin-top: 5rem;
+}
+
+.rules {
+    margin-top: 5rem;
+}
