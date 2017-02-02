@@ -26,6 +26,8 @@ urlpatterns = [
     url(r'^rules/', spc_views.rules),
     url(r'^tinymce/', include('tinymce.urls')),
     url(r'^login/$', spc_views.user_login, name='login'),
+    url(r'^subscribe/$', spc_views.subscribe, name='subscribe'),
+    url(r'^unsubscribe/$', spc_views.unsubscribe, name='unsubscribe'),
 
 
     url(r'^register/$', spc_views.register, name='register'),
