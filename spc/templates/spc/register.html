@@ -1,13 +1,33 @@
 {% extends "spc/base.html" %}
 
-{% block title %}Create an account{% endblock %}
+{% block title %}Créer un compte{% endblock %}
 
 {% block content %}
-    <h1>Create an account</h1>
-    <p>Please, sign up using the following form:</p>
+
+    <h1>Créer un compte</h1>
     <form action="." method="post">
-        {{ user_form.as_p }}
-        {% csrf_token %}
-        <p><input type="submit" value="Create my account"></p>
+	{% csrf_token %}
+        <div class="form-group">
+            <label for="id_username">Nom d'utilisateur</label>
+            <input type="text" id="id_username" class="form-control" name="username"/>
+        </div>  
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="id_email" class="form-control" name="email"/>
+        </div>
+	<div class="form-group">
+            <label>Login Trackmania</label>
+            <input type="text" id="id_login_trackmania" class="form-control" name="login_trackmania"/>
+        </div>
+	<div class="form-group">
+            <label>Mot de passe</label>
+            <input type="password" id="id_password" class="form-control" name="password"/>
+        </div>
+	<div class="form-group">
+            <label>Répétez le mot de passe</label>
+            <input type="password" id="id_password2" class="form-control" name="password2"/>
+        </div>
+        <button type="submit" class="btn btn-primary">Créer mon compte</button>
     </form>
+
 {% endblock %}

@@ -2,6 +2,10 @@
     height: 100%;
 }
 
+.navbar {
+    border-radius: 0 !important;
+}
+
 html {
     height: 100%;
     box-sizing: border-box;
@@ -10,19 +14,31 @@ html {
 body {
     position: relative;
     margin: 0;
-    padding-bottom: 8rem;
+    padding-bottom: 12rem;
     min-height: 100%;
-    font-family: "Helvetica Neue", Arial, sans-serif;
+}
+
+.center {
+    display: table-cell; 
+    vertical-align: middle;
 }
 
 .footer {
+    height: 64px;
     position: absolute;
     right: 0;
     bottom: 0;
     left: 0;
     padding: 1rem;
-    background-color: #efefef;
+    background-color: #3e3f3a;
     text-align: center;
+    font-family: "Roboto","Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    color: #98978b;
+    text-transform: uppercase;
+    font-weight: 500;
+    display: table;
+    width: 100%;
 }
 
 .joueurs {
@@ -32,7 +48,8 @@ body {
 .box-shadow {
     background-color: white;
     box-shadow: 1px 1px 5px #bbbbbb;
-    padding: 1%;
+    padding: 2%;
+    border-radius: 5px;
 }
 
 .maps {

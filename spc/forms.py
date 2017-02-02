@@ -4,6 +4,14 @@ from spc.models import Rule, User
 from tinymce.widgets import TinyMCE
 
 
+class UnsubscribeForm(forms.Form):
+    edition_id = forms.CharField()
+
+
+class SubscribeForm(forms.Form):
+    edition_id = forms.CharField()
+
+
 class LoginForm(forms.Form):
     username = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput)
@@ -15,19 +23,19 @@ class UserRegistrationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'email', 'login_trackmania', 'pseudo')
+        fields = ('username', 'first_name', 'email', 'login_trackmania')
 
     def clean_password2(self):
         cd = self.cleaned_data
         if cd['password'] != cd['password2']:
-            raise forms.ValidationError('Passwords don\'t match.')
+            raise forms.ValidationError('Le mots de passe ne correspondent pas')
         return cd['password2']
 
 
 class UserEditForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'email')
+        fields = ('email', 'login_trackmania')
 
 
 class RuleForm(forms.ModelForm):

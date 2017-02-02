@@ -1,18 +1,29 @@
 {% extends "spc/base.html" %}
 {% block content %}
-<h1> Editions {{ edition.numero }} du {{ edition.date_debut|date:"d M Y h:i" }} au {{ edition.date_fin|date:"d M Y h:i" }} </h1>
+<h1> Edition {{ edition.numero }} du {{ edition.date_debut|date:"d M Y h:i" }} au {{ edition.date_fin|date:"d M Y h:i" }} </h1>
     <div class="joueurs box-shadow">
         <h4><u>Participants</u></h4>
         <br/>
-        <div>
-            <table class="table table-striped">
-                {% for joueur in edition.joueur_ids.all %}
-                <tr><td>{{ joueur.username }}</td></tr>
-                {% empty %}
-                Aucun joueur n'est inscrit
-                {% endfor %}
-            </table>
-        </div>
+        <table class="table table-striped">
+            {% for joueur in edition.joueur_ids.all %}
+            <tr><td>{{ joueur.username }}</td></tr>
+            {% empty %}
+            Aucun joueur n'est inscrit
+            {% endfor %}
+        </table>
+        {% if user.is_authenticated and not subscribed %}
+        <form action="{% url "subscribe" %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" id="id_edition_id" name="edition_id" value="{{ edition.id }}"/>
+            <button type="submit" class="btn btn-primary btn-xs btn-success"/>Je m'inscris</button>
+        </form>
+        {% elif user.is_authenticated and subscribed %}
+        <form action="{% url "unsubscribe" %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" id="id_edition_id" name="edition_id" value="{{ edition.id }}"/>
+            <button type="submit" class="btn btn-primary btn-xs btn-danger"/>Je me désinscris</button>
+        </form>
+        {% endif %}
     </div>
     <div class="maps box-shadow">
         <h4><u>Maps</u></h4>

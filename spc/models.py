@@ -7,7 +7,6 @@ from tinymce.models import HTMLField
 
 class User(AbstractUser):
     login_trackmania = models.CharField(max_length=64)
-    pseudo = models.CharField(max_length=64)
 
 
 class Edition(models.Model):

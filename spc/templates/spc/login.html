@@ -9,15 +9,17 @@
     {% else %}
         <p>Utilisez le formulaire suivant pour vous authentifier. Si vous ne possédez pas de compte, <a href="{% url "register" %}">créez en un ici</a></p>
     {% endif %}
-    
-    <div class="login-form">
-        <form action="{% url "login" %}" method="post">
-            {{ form.as_p }}
-            {% csrf_token %}
-            <input type="hidden" name="next" value="{{ next }}" />
-            <p><input type="submit" value="Log-in"></p>
-        </form>
-        <p><a href="{% url "password_reset" %}">Mot de passe oublié ?</a></p>
-    </div>
+    <form action="{% url "login" %}" method="post">
+	{% csrf_token %}
+    	<div class="form-group">
+            <label for="id_username">Nom d'utilisateur</label>
+            <input type="text" id="id_username" class="form-control" name="username"/>
+        </div>
+	<div class="form-group">
+            <label>Mot de passe</label>
+            <input type="password" id="id_password" class="form-control" name="password"/>
+        </div>
+	<button type="submit" class="btn btn-primary">Log-in</button> <a href="{% url "password_reset" %}">Mot de passe oublié ?</a>
+    </form>
     
 {% endblock %}
