@@ -2,27 +2,58 @@
     height: 100%;
 }
 
+.navbar {
+    border-radius: 0 !important;
+}
+
 html {
     height: 100%;
     box-sizing: border-box;
 }
 
 body {
+    background-color: #bfbfbf !important;
     position: relative;
     margin: 0;
-    padding-bottom: 8rem;
+    padding-bottom: 12rem;
     min-height: 100%;
-    font-family: "Helvetica Neue", Arial, sans-serif;
+}
+
+#form-languages button{
+    height: 100% !important;
+}
+
+.container {
+    width: 85% !important;
+    min-height: 60%;
+}
+
+.center {
+    display: table-cell; 
+    vertical-align: middle;
+}
+
+.nav-tabs > li > a {
+    border: 1px solid #dfd7ca !important;
+    color: #98978b;
 }
 
 .footer {
+    height: 64px;
     position: absolute;
     right: 0;
     bottom: 0;
     left: 0;
     padding: 1rem;
-    background-color: #efefef;
+    background-color: #3e3f3a;
     text-align: center;
+    font-family: "Roboto","Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    color: #98978b;
+    text-transform: uppercase;
+    font-weight: 500;
+    display: table;
+    width: 100%;
 }
 
 .joueurs {
@@ -30,9 +61,11 @@ body {
 }
 
 .box-shadow {
-    background-color: white;
+    background-color: #f0f0f0;
     box-shadow: 1px 1px 5px #bbbbbb;
-    padding: 1%;
+    padding: 2%;
+    border-radius: 10px;
+    min-height: 60% !important;
 }
 
 .maps {

@@ -5,6 +5,14 @@ from django.conf import settings
 from tinymce.models import HTMLField
 
 
+class New(models.Model):
+
+    author_id = models.ForeignKey(settings.AUTH_USER_MODEL)
+    content = HTMLField()
+    content_en = HTMLField()
+    active = models.BooleanField(default=False)
+
+
 class User(AbstractUser):
     login_trackmania = models.CharField(max_length=64)
 
@@ -30,4 +38,5 @@ class Map(models.Model):
 class Rule(models.Model):
 
     content = HTMLField()
+    content_en = HTMLField()
     active = models.BooleanField(default=False)

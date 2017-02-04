@@ -8,11 +8,20 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.generic import DetailView
 from spc.forms import LoginForm, UserRegistrationForm, UserEditForm, SubscribeForm, UnsubscribeForm
-from spc.models import Edition, Rule
+from spc.models import Edition, New, Rule
+from django.utils.translation import LANGUAGE_SESSION_KEY
+
+
+def base(request):
+    if hasattr(request, 'session'):
+        return {'user_lang': request.session.get(LANGUAGE_SESSION_KEY, 'fr')}
+    return {'user_lang': 'fr'}
 
 
 def home(request):
-    return render(request, 'spc/home.html', locals())
+    news = New.objects.filter(active=True)
+    return render(request, 'spc/home.html', {'news': news})
+
 
 @login_required
 def unsubscribe(request):

@@ -12,15 +12,38 @@ html {
 }
 
 body {
+    background-color: #bfbfbf !important;
     position: relative;
     margin: 0;
     padding-bottom: 12rem;
     min-height: 100%;
 }
 
+.tab-content {
+    background-color: #ffffff;
+    padding: 1%;
+    border-radius: 0 0 10px 10px;
+    border: 1px solid #dfd7ca !important;
+    border-top: 0 !important;
+}
+
+#form-languages button{
+    height: 64px !important;
+}
+
+.container {
+    width: 85% !important;
+    min-height: 60%;
+}
+
 .center {
     display: table-cell; 
     vertical-align: middle;
+}
+
+.nav-tabs > li > a {
+    border: 1px solid #dfd7ca !important;
+    color: #98978b;
 }
 
 .footer {
@@ -46,10 +69,11 @@ body {
 }
 
 .box-shadow {
-    background-color: white;
+    background-color: #f0f0f0;
     box-shadow: 1px 1px 5px #bbbbbb;
     padding: 2%;
-    border-radius: 5px;
+    border-radius: 10px;
+    min-height: 60% !important;
 }
 
 .maps {

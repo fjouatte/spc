@@ -9,7 +9,7 @@
     {% else %}
         <p>Utilisez le formulaire suivant pour vous authentifier. Si vous ne possédez pas de compte, <a href="{% url "register" %}">créez en un ici</a></p>
     {% endif %}
-    <form action="{% url "login" %}" method="post">
+    <form action="{% url "login" %}"  method="post">
 	{% csrf_token %}
     	<div class="form-group">
             <label for="id_username">Nom d'utilisateur</label>

@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib import admin
-from spc.models import Rule, User
+from spc.models import Rule, User, New
 from tinymce.widgets import TinyMCE
 
 
@@ -37,16 +37,30 @@ class UserEditForm(forms.ModelForm):
         model = User
         fields = ('email', 'login_trackmania')
 
+class NewForm(forms.ModelForm):
+
+    content = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 30}))
+    content_en = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 30}))
+
+    class Meta:
+        model = New
+        fields = ('content', 'content_en', 'active')
+
+
+class NewFormAdmin(admin.ModelAdmin):
+    model = NewForm
+    fields = ('content', 'content_en', 'active')
 
 class RuleForm(forms.ModelForm):
 
     content = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 30}))
+    content_en = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 30}))
 
     class Meta:
         model = Rule
-        fields = ('content', 'active')
+        fields = ('content', 'content_en', 'active')
 
 
 class RuleFormAdmin(admin.ModelAdmin):
     model = RuleForm
-    fields = ('content', 'active')
+    fields = ('content', 'content_en', 'active')

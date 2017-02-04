@@ -1,11 +1,17 @@
 {% extends "spc/base.html" %}
+{% load i18n %}
 {% block content %}
-    <h2>Bienvenue !</h2>
-    <p>
-       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rhoncus 
-       massa non tortor. Vestibulum diam diam, posuere in viverra in, 
-       ullamcorper et libero. Donec eget libero quis risus congue imperdiet ac 
-       id lectus. Nam euismod cursus arcu, et consequat libero ullamcorper sit 
-       amet.
-    </p>
+<h2>{% trans "Bienvenue !" %}</h2>
+    {% for new in news %}
+    <div class="box-shadow">
+        <h6>{% trans "par"%}  {{ new.author_id.username }} {% trans "le" %} {{ new.create_date }}</h6>
+        {%if user_lang == 'en' %}
+            {{ new.content_en|safe }}
+        {% else %}
+            {{ new.content|safe }}
+        {% endif %}
+    </div>
+    {% empty %}
+    <div class="box-shadow">Aucune news n'est publiée</div>
+    {% endfor %}
 {% endblock %}

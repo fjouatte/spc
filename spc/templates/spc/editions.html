@@ -1,33 +1,46 @@
 {% extends "spc/base.html" %}
 {% block content %}
-    <h2> Editions passées </h2>
-    {% for old_edition in old %}
-        <div class="edition">
-            <h3>Edition {{ old_edition.numero }}</h3>
+    <h2>Éditions</h2>
+    <div class="box-shadow">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#1" data-toggle="tab">Édition en cours <span class="badge">{{ current|length }}</span></a></li>
+            <li><a href="#2" data-toggle="tab">Éditions à venir <span class="badge">{{ new|length }}</span></a></li>
+            <li><a href="#3"data-toggle="tab">Éditions passées <span class="badge">{{ old|length}}</span></a></li>
+        </ul>
+    <div class="tab-content clearfix">
+	<div class="tab-pane active" id="1">
+            {% for current_edition in current %}
+            <div class="edition list-group">
+                <a href="/edition/{{ current_edition.id }}" class="list-group-item">Édition {{ current_edition.numero }}</a>
+            </div>
+            {% empty %}
+            <div class="edition">
+                <h4> Aucune édition n'est en cours </h4>
+            </div>
+            {% endfor %}
         </div>
-    {% empty %}
-        <div class="edition">
-            <h4> Aucune édition n'est encore passée </h4>
+	<div class="tab-pane" id="2">
+            {% for new_edition in new %}
+            <div class="edition list-group">
+                <a href="/edition/{{ new_edition.id }}" class="list-group-item">Édition {{ new_edition.numero }}</a>
+            </div>
+            {% empty %}
+            <div class="edition">
+                <h4> Aucune édition n'est à venir </h4>
+            </div>
+            {% endfor %}
         </div>
-    {% endfor %}
-    <h2> Editions à venir </h2>
-    {% for new_edition in new %}
-        <div class="edition">
-            <a href="/edition/{{ new_edition.id }}"><h4>Edition {{ new_edition.numero }}</h4></a>
+        <div class="tab-pane" id="3">
+            {% for old_edition in old %}
+            <div class="edition list-group">
+                <a href="/edition/{{ old_edition.id }}" class="list-group-item">Édition {{ old_edition.numero }}</a>
+            </div>
+            {% empty %}
+            <div class="edition">
+                <h4> Aucune édition n'est encore passée </h4>
+            </div>
+            {% endfor %}
         </div>
-    {% empty %}
-        <div class="edition">
-            <h4> Aucune édition n'est à venir </h4>
-        </div>
-    {% endfor %}
-    <h2> Edition en cours </h2>
-    {% for current_edition in current %}
-        <div class="edition">
-            <h3>Edition {{ current_edition.numero }}</h3>
-        </div>
-    {% empty %}
-        <div class="edition">
-            <h4> Aucune édition n'est en cours </h4>
-        </div>
-    {% endfor %}
+    </div>
+    </div>
 {% endblock %}

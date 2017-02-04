@@ -28,7 +28,7 @@ urlpatterns = [
     url(r'^login/$', spc_views.user_login, name='login'),
     url(r'^subscribe/$', spc_views.subscribe, name='subscribe'),
     url(r'^unsubscribe/$', spc_views.unsubscribe, name='unsubscribe'),
-
+    url(r'^i18n/', include('django.conf.urls.i18n')),
 
     url(r'^register/$', spc_views.register, name='register'),
     url(r'^edit/$', spc_views.edit, name='edit'),
