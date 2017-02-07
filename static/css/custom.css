@@ -19,8 +19,16 @@ body {
     min-height: 100%;
 }
 
+.tab-content {
+    background-color: #ffffff;
+    padding: 1%;
+    border-radius: 0 0 10px 10px;
+    border: 1px solid #dfd7ca !important;
+    border-top: 0 !important;
+}
+
 #form-languages button{
-    height: 100% !important;
+    height: 64px !important;
 }
 
 .container {
@@ -58,6 +66,14 @@ body {
 
 .joueurs {
     margin-top: 5rem;
+}
+
+#main-container .box-shadow {
+    margin-bottom: 1%;
+}
+
+#main-container .box-shadow:last-child {
+    margin-bottom: 0;
 }
 
 .box-shadow {

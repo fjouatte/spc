@@ -1,8 +1,8 @@
 {% extends "spc/base.html" %}
 {% load i18n %}
 {% block content %}
-<h2>{% trans "Règlement" %}</h2>
-    <div class="rules box-shadow">
+    <h2>{% trans "Règlement" %}</h2>
+    <div class="box-shadow">
         {% if rule %}
             {{ rule.content|safe }}
         {% else %}

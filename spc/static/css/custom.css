@@ -68,6 +68,14 @@ body {
     margin-top: 5rem;
 }
 
+#main-container .box-shadow {
+    margin-bottom: 1%;
+}
+
+#main-container .box-shadow:last-child {
+    margin-bottom: 0;
+}
+
 .box-shadow {
     background-color: #f0f0f0;
     box-shadow: 1px 1px 5px #bbbbbb;

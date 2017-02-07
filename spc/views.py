@@ -4,12 +4,14 @@ from datetime import datetime
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.utils.translation import LANGUAGE_SESSION_KEY
 from django.views.generic import DetailView
 from spc.forms import LoginForm, UserRegistrationForm, UserEditForm, SubscribeForm, UnsubscribeForm
-from spc.models import Edition, New, Rule
-from django.utils.translation import LANGUAGE_SESSION_KEY
+from spc.models import Edition, EditionQualif, New, Rule
+
 
 
 def base(request):
@@ -19,7 +21,17 @@ def base(request):
 
 
 def home(request):
-    news = New.objects.filter(active=True)
+    news = New.objects.filter(active=True).order_by('-create_date')
+    paginator = Paginator(news, 5)
+    page = request.GET.get('page')
+    try:
+        news = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        news = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        news = paginator.page(paginator.num_pages)
     return render(request, 'spc/home.html', {'news': news})
 
 
@@ -58,9 +70,12 @@ def rules(request):
 
 
 def editions(request):
-    old = Edition.objects.filter(date_fin__lte=datetime.now())
-    new = Edition.objects.filter(date_debut__gte=datetime.now())
-    current = Edition.objects.filter(date_debut__lte=datetime.now()).filter(date_fin__gte=datetime.now())
+    old = Edition.objects.filter(date_end__lte=datetime.now())
+    new = Edition.objects.filter(date_start__gte=datetime.now())
+    current = Edition.objects.filter(date_start__lte=datetime.now()).filter(date_end__gte=datetime.now())
+    # si une édition est en cours et que les qualifs sont en cours
+    if current and current.editionqualif:
+        classement = current.editionqualif.get_classement()
     return render(
         request,
         'spc/editions.html',

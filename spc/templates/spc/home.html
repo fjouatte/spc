@@ -14,4 +14,27 @@
     {% empty %}
     <div class="box-shadow">Aucune news n'est publiée</div>
     {% endfor %}
+    <div class="pagination">
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                {% if news.has_previous %}
+                <li>
+                    <a href="?page={{ news.previous_page_number }}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                {% endif %}
+                <li class="active">
+                    <span class="current">Page {{ news.number }} of {{ news.paginator.num_pages }}.</span>
+                </li>
+                {% if news.has_next %}
+                <li>
+                    <a href="?page={{ news.next_page_number }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
 {% endblock %}
