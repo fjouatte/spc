@@ -73,17 +73,22 @@ def editions(request):
     old = Edition.objects.filter(date_end__lte=datetime.now())
     new = Edition.objects.filter(date_start__gte=datetime.now())
     current = Edition.objects.filter(date_start__lte=datetime.now()).filter(date_end__gte=datetime.now())
+    values = dict(old=old, new=new, current=current, classement=False, erreur=False)
     # si une édition est en cours et que les qualifs sont en cours
-    if current and current.editionqualif:
-        classement = current.editionqualif.get_classement()
+    if current and current[0].editionqualif:
+        qualif = current[0].editionqualif
+        if qualif.date_start < datetime.now():
+            classement = qualif.get_classement()
+            if not classement:
+                values.update(erreur=True)
+            else:
+                values.update(classement=qualif.get_classement())
+        else:
+            values.update(not_started=True)
     return render(
         request,
         'spc/editions.html',
-        {
-            'old': old,
-            'new': new,
-            'current': current,
-        }
+        values
     )
 
 

@@ -1,41 +1,70 @@
 {% extends "spc/base.html" %}
 {% block content %}
 <h1> Edition {{ edition.numero }} du {{ edition.date_start|date:"l j F Y h:i" }} au {{ edition.date_end|date:"l j F Y h:i" }} </h1>
-    <div class="joueurs box-shadow">
-        <h4><u>Participants</u></h4>
-        <br/>
-        <table class="table table-striped">
-            {% for joueur in edition.joueur_ids.all %}
-            <tr><td>{{ joueur.username }}</td></tr>
+    <div style="display: flex; width: 100%">
+        <div class="box-shadow" style="width: 33%; margin: 5px; float: right; padding: 10px 10px;">
+            <h4><u>Participants</u></h4>
+            <br/>
+            <table class="table table-striped">
+                {% for joueur in edition.joueur_ids.all %}
+                <tr><td>{{ joueur.username }}</td></tr>
+                {% empty %}
+                Aucun joueur n'est inscrit
+                {% endfor %}
+            </table>
+            {% if user.is_authenticated and not subscribed %}
+            <form action="{% url "subscribe" %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" id="id_edition_id" name="edition_id" value="{{ edition.id }}"/>
+                <button type="submit" class="btn btn-primary btn-xs btn-success"/>Je m'inscris</button>
+            </form>
+            {% elif user.is_authenticated and subscribed %}
+            <form action="{% url "unsubscribe" %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" id="id_edition_id" name="edition_id" value="{{ edition.id }}"/>
+                <button type="submit" class="btn btn-primary btn-xs btn-danger"/>Je me désinscris</button>
+            </form>
+            {% endif %}
+        </div>
+        <div class="box-shadow" style="width: 33%; margin: 5px; float: right; padding: 10px 10px;">
+            <h4>Informations générales</h4>
+        </div>
+        <div class="box-shadow" style="width: 33%; margin: 5px; float: right; padding: 10px 10px;">
+            <h4><u>Maps</u></h4>
+            <br/>
+            <table class="table table-striped">
+            {% for map in edition.map_ids.all %}
+            <tr><td>{{ map.nom }}</td></tr>
             {% empty %}
-            Aucun joueur n'est inscrit
+            Aucune map
             {% endfor %}
-        </table>
-        {% if user.is_authenticated and not subscribed %}
-        <form action="{% url "subscribe" %}" method="POST">
-            {% csrf_token %}
-            <input type="hidden" id="id_edition_id" name="edition_id" value="{{ edition.id }}"/>
-            <button type="submit" class="btn btn-primary btn-xs btn-success"/>Je m'inscris</button>
-        </form>
-        {% elif user.is_authenticated and subscribed %}
-        <form action="{% url "unsubscribe" %}" method="POST">
-            {% csrf_token %}
-            <input type="hidden" id="id_edition_id" name="edition_id" value="{{ edition.id }}"/>
-            <button type="submit" class="btn btn-primary btn-xs btn-danger"/>Je me désinscris</button>
-        </form>
-        {% endif %}
+            </table>
+        </div>
     </div>
-    <div class="maps box-shadow">
-        <h4><u>Maps</u></h4>
-        <br/>
-        <table class="table table-striped">
-        {% for map in edition.map_ids.all %}
-        <tr><td>{{ map.nom }}</td></tr>
-        {% empty %}
-        Aucune map
-        {% endfor %}
-        </table>
+    <div style="display: flex; width: 100%; margin-top: 5px;">
+        <div class="box-shadow" style="width: 100%; margin: 5px;">
+            <h4>Qualifications</h4>
+            <br/>
+            {% if erreur %}
+            Le classement n'est pas disponible
+            {% endif %}
+            <table class="table table-striped">
+            {% for line in Classement %}
+            <tr><td>{{ line }}</td></tr>
+            {% empty %}
+            Le classement n'est pas publié
+            {% endfor %}
+            </table>
+        </div>
     </div>
-        
+    <div style="display: flex; width: 100%; margin-top: 5px;">
+        <div class="box-shadow" style="width: 100%; margin: 5px;">
+            <h4>Demi-finales</h4>
+        </div>
+    </div>
+    <div style="display: flex; width: 100%; margin-top: 5px;">
+        <div class="box-shadow" style="width: 100%; margin: 5px;">
+            <h4>Finale</h4>
+        </div>
     </div>
 {% endblock %}

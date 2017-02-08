@@ -45,11 +45,16 @@ class EditionQualif(models.Model):
     classement = ArrayField(ArrayField(models.IntegerField()))
 
     def get_classement(self):
-        conn = mysql.connector.connect(host='localhost', user='root', database='Spam_Tech')
+        try:
+            conn = mysql.connector.connect(host='localhost', user='root', database='Spam_Tech')
+        except Exception as ex:
+            return False
         try:
             cursor = conn.cursor()
             cursor.execute("select * from rs_rank")
             rows = cursor.fetchall()
+        except Exception as exc:
+            return False
         finally:
             conn.close()
 
