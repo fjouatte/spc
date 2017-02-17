@@ -33,7 +33,7 @@
             <h4><u>Maps</u></h4>
             <br/>
             <table class="table table-striped">
-            {% for map in edition.map_ids.all %}
+            {% for map in edition.map_set.all %}
             <tr><td>{{ map.nom }}</td></tr>
             {% empty %}
             Aucune map
@@ -46,15 +46,37 @@
             <h4>Qualifications</h4>
             <br/>
             {% if erreur %}
-            Le classement n'est pas disponible
+            <p>Le classement n'est pas disponible</p>
             {% endif %}
             <table class="table table-striped">
-            {% for line in Classement %}
-            <tr><td>{{ line }}</td></tr>
-            {% empty %}
-            Le classement n'est pas publié
-            {% endfor %}
+                <tr><th>Position</th><th>Login</th><th>Pseudo</th><th></th>
+                {% for line in classement %}
+                <tr><td>{{ line.position }}</td><td>{{ line.login }}</td><td>{{ line.pseudo }}</td></tr>
+                {% empty %}
+                <p>Le classement n'est pas publié</p>
+                {% endfor %}
             </table>
+            {% if classement.has_other_pages %}
+            <ul class="pagination">
+                {% if classement.has_previous %}
+                <li><a href="?page={{ classement.previous_page_number }}">&laquo;</a></li>
+                {% else %}
+                <li class="disabled"><span>&laquo;</span></li>
+                {% endif %}
+                {% for i in classement.paginator.page_range %}
+                {% if classement.number == i %}
+                <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                {% else %}
+                <li><a href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+                {% endfor %}
+                {% if classement.has_next %}
+                <li><a href="?page={{ classement.next_page_number }}">&raquo;</a></li>
+                {% else %}
+                <li class="disabled"><span>&raquo;</span></li>
+                {% endif %}
+            </ul>
+            {% endif %}
         </div>
     </div>
     <div style="display: flex; width: 100%; margin-top: 5px;">

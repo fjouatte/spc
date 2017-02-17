@@ -12,7 +12,7 @@ html {
 }
 
 body {
-    background-color: #bfbfbf !important;
+    background-color: #dfdfdf !important;
     position: relative;
     margin: 0;
     padding-bottom: 12rem;
@@ -29,6 +29,13 @@ body {
 
 #form-languages button{
     height: 64px !important;
+}
+
+.maniaplanet_connect {
+    background: rgba(0, 0, 0, 0) url('http://files.maniaplanet.com/web/images/mania-connect/mania-connect-202x50-sprite.png') no-repeat scroll 0 0; 
+    width: 202px; 
+    height: 50px; 
+    display:inline-block;
 }
 
 .container {
@@ -77,7 +84,7 @@ body {
 }
 
 .box-shadow {
-    background-color: #f0f0f0;
+    background-color: #fdfdfd;
     box-shadow: 1px 1px 5px #bbbbbb;
     padding: 1% 2%;
     border-radius: 10px;

@@ -1,3 +1,5 @@
+# coding: utf-8
+
 """spam_championship URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -17,8 +19,13 @@ from django.conf.urls import url, include
 from django.contrib.auth import views as auth_views
 from django.contrib import admin
 from spc import views as spc_views
+from allauth.socialaccount.providers.oauth.urls import default_urlpatterns
+
+from spc.provider import ManiaplanetOAuth2Provider
+
 
 urlpatterns = [
+    default_urlpatterns(ManiaplanetOAuth2Provider)[0],
     url(r'^admin/', admin.site.urls),
     url(r'^$', spc_views.home),
     url(r'^editions/', spc_views.editions),
@@ -49,4 +56,5 @@ urlpatterns = [
     url(r'^password-reset/done/$', auth_views.password_reset_done, name='password_reset_done'),
     url(r'^password-reset/confirm/(?P<uidb64>[-\w]+)/(?P<token>[-\w]+)/$', auth_views.password_reset_confirm, name='password_reset_confirm'),
     url(r'^password-reset/complete/$', auth_views.password_reset_complete, name='password_reset_complete'),
+    url(r'^accounts/', include('allauth.urls')),
 ]

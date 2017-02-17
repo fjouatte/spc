@@ -1,25 +1,11 @@
 {% extends "spc/base.html" %}
+{% load socialaccount %}
 
 {% block title %}S'inscrire{% endblock %}
 
 {% block content %}
     <h1>Log-in</h1>
-    {% if form.errors %}
-        <p>Le nom d'utilisateur et le mot de passe ne correspondent pas. Essayez de nouveau.</p>
-    {% else %}
-        <p>Utilisez le formulaire suivant pour vous authentifier. Si vous ne possédez pas de compte, <a href="{% url "register" %}">créez en un ici</a></p>
-    {% endif %}
-    <form action="{% url "login" %}"  method="post">
-	{% csrf_token %}
-    	<div class="form-group">
-            <label for="id_username">Nom d'utilisateur</label>
-            <input type="text" id="id_username" class="form-control" name="username"/>
-        </div>
-	<div class="form-group">
-            <label>Mot de passe</label>
-            <input type="password" id="id_password" class="form-control" name="password"/>
-        </div>
-	<button type="submit" class="btn btn-primary">Log-in</button> <a href="{% url "password_reset" %}">Mot de passe oublié ?</a>
-    </form>
-    
+    <div>
+        <a class="maniaplanet_connect" href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}"></a>
+    </div>
 {% endblock %}

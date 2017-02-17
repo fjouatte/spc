@@ -1,3 +1,5 @@
+# coding: utf-8
+
 from django import forms
 from django.contrib import admin
 from spc.models import Rule, User, New
@@ -18,8 +20,9 @@ class LoginForm(forms.Form):
 
 
 class UserRegistrationForm(forms.ModelForm):
-    password = forms.CharField(label='Password', widget=forms.PasswordInput)
-    password2 = forms.CharField(label='Repeat password', widget=forms.PasswordInput)
+    email = forms.CharField(label='Email', widget=forms.EmailInput, )
+    password = forms.CharField(label='Password', widget=forms.PasswordInput, min_length=6)
+    password2 = forms.CharField(label='Repeat password', widget=forms.PasswordInput, min_length=6)
 
     class Meta:
         model = User
@@ -30,6 +33,13 @@ class UserRegistrationForm(forms.ModelForm):
         if cd['password'] != cd['password2']:
             raise forms.ValidationError('Le mots de passe ne correspondent pas')
         return cd['password2']
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        username = self.cleaned_data.get('username')
+        if email and User.objects.filter(email=email).exclude(username=username).count():
+            raise forms.ValidationError(u'Cette adresse mail est déjà utilisée')
+        return email
 
 
 class UserEditForm(forms.ModelForm):

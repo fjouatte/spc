@@ -5,29 +5,44 @@
 {% block content %}
 
     <h1>Créer un compte</h1>
-    <form action="." method="post">
+    <form data-toggle="validator" role="form">
 	{% csrf_token %}
         <div class="form-group">
-            <label for="id_username">Nom d'utilisateur</label>
-            <input type="text" id="id_username" class="form-control" name="username"/>
+            {% if errors.username %}
+                <div class="alert alert-danger">{{ errors.username }}</div>
+            {% endif %}
+            <label for="id_username" class="control-label">Nom d'utilisateur</label>
+            <input type="text" id="id_username" class="form-control" name="username" required/>
         </div>  
         <div class="form-group">
+            {% if errors.email %}
+                <div class="alert alert-danger">{{ errors.email }}</div>
+            {% endif %}
             <label>Email</label>
-            <input type="email" id="id_email" class="form-control" name="email"/>
+            <input type="email" id="id_email" class="form-control" name="email" data-error="Bruh, that email address is invalid" required/>
         </div>
 	<div class="form-group">
+            {% if errors.login_trackmania %}
+                <div class="alert alert-danger">{{ errors.login_trackmania }}</div>
+            {% endif %}
             <label>Login Trackmania</label>
-            <input type="text" id="id_login_trackmania" class="form-control" name="login_trackmania"/>
+            <input type="text" id="id_login_trackmania" class="form-control" name="login_trackmania" required/>
         </div>
 	<div class="form-group">
+            {% if errors.password %}
+                <div class="alert alert-danger">{{ errors.password }}</div>
+            {% endif %}
             <label>Mot de passe</label>
-            <input type="password" id="id_password" class="form-control" name="password"/>
+            <input type="password" id="id_password" class="form-control" name="password" required/>
         </div>
 	<div class="form-group">
+            {% if errors.password2 %}
+                <div class="alert alert-danger">{{ errors.password2 }}</div>
+            {% endif %}
             <label>Répétez le mot de passe</label>
-            <input type="password" id="id_password2" class="form-control" name="password2"/>
+            <input type="password" id="id_password2" class="form-control" name="password2" required/>
         </div>
-        <button type="submit" class="btn btn-primary">Créer mon compte</button>
+        <button type="submit" class="btn btn-success">Créer mon compte</button>
     </form>
 
 {% endblock %}

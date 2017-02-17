@@ -1,5 +1,8 @@
 # coding: utf-8
 
+from allauth.socialaccount.providers.oauth2.views import (OAuth2Adapter, OAuth2LoginView, OAuth2CallbackView)
+from spc.provider import ManiaplanetOAuth2Provider
+from allauth.socialaccount import app_settings, providers
 from datetime import datetime
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
@@ -11,13 +14,17 @@ from django.utils.translation import LANGUAGE_SESSION_KEY
 from django.views.generic import DetailView
 from spc.forms import LoginForm, UserRegistrationForm, UserEditForm, SubscribeForm, UnsubscribeForm
 from spc.models import Edition, EditionQualif, New, Rule
-
+import requests
 
 
 def base(request):
+    res = {'user_lang': 'fr'}
+    providers_obj = providers.registry.get_list()
+    if providers_obj:
+        res.update(provider=providers_obj[0])
     if hasattr(request, 'session'):
-        return {'user_lang': request.session.get(LANGUAGE_SESSION_KEY, 'fr')}
-    return {'user_lang': 'fr'}
+        res.update(user_lang=request.session.get(LANGUAGE_SESSION_KEY, 'fr'))
+    return res
 
 
 def home(request):
@@ -78,11 +85,11 @@ def editions(request):
     if current and current[0].editionqualif:
         qualif = current[0].editionqualif
         if qualif.date_start < datetime.now():
-            classement = qualif.get_classement()
+            classement = qualif.get_classement_qualif()
             if not classement:
                 values.update(erreur=True)
             else:
-                values.update(classement=qualif.get_classement())
+                values.update(classement)
         else:
             values.update(not_started=True)
     return render(
@@ -128,6 +135,10 @@ def register(request):
             return render(
                 request, 'spc/register_done.html', {'new_user': new_user}
             )
+        else:
+            return render(
+                request, 'spc/register.html', {'user_form': user_form, 'errors': user_form._errors}
+            )
     else:
         user_form = UserRegistrationForm()
     return render(request, 'spc/register.html', {'user_form': user_form})
@@ -161,4 +172,41 @@ class LireEdition(DetailView):
         current_user_id = self.request.user.id
         context['subscribed'] = current_user_id in subscribed_users_ids
         context['user'] = self.request.user
+        # si une édition est en cours et que les qualifs sont en cours
+        qualif = edition.editionqualif
+        if qualif.date_start < datetime.now():
+            classement = qualif.get_classement_qualif()
+            if not classement:
+                context.update(erreur=True)
+            else:
+                paginator = Paginator(classement, 20)
+                page = self.request.GET.get('page')
+                try:
+                    classement = paginator.page(page)
+                except PageNotAnInteger:
+                    # If page is not an integer, deliver first page.
+                    classement = paginator.page(1)
+                except EmptyPage:
+                    # If page is out of range (e.g. 9999), deliver last page of results.
+                    classement = paginator.page(paginator.num_pages)
+                    context.update(classement=classement)
+        else:
+            context.update(not_started=True)
         return context
+
+
+class ManiaplanetOAuth2Adapter(OAuth2Adapter):
+    provider_id = ManiaplanetOAuth2Provider.id
+    access_token_url = 'https://ws.maniaplanet.com/oauth2/token/'
+    authorize_url = 'https://ws.maniaplanet.com/oauth2/authorize'
+    profile_url = 'https://ws.maniaplanet.com/player/'
+
+    def complete_login(self, request, app, token, **kwargs):
+        resp = requests.get(
+            self.profile_url,
+            headers = {'Authorization': 'Bearer {0}'.format(token.token)}
+        )
+        return self.get_provider().sociallogin_from_response(request, resp.json())
+
+oauth_login = OAuth2LoginView.adapter_view(ManiaplanetOAuth2Adapter)
+oauth_callback = OAuth2CallbackView.adapter_view(ManiaplanetOAuth2Adapter)

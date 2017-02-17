@@ -1,3 +1,5 @@
+# coding: utf-8
+
 from __future__ import unicode_literals
 from datetime import datetime
 from django.contrib import admin
@@ -24,7 +26,7 @@ class New(models.Model):
 
 
 class User(AbstractUser):
-    login_trackmania = models.CharField(max_length=64, unique=True)
+    login_trackmania = models.CharField(max_length=64, unique=True, blank=False)
 
 
 class Edition(models.Model):
@@ -44,20 +46,31 @@ class EditionQualif(models.Model):
     date_end = models.DateTimeField()
     classement = ArrayField(ArrayField(models.IntegerField()))
 
-    def get_classement(self):
+    def get_classement_qualif(self):
+        """
+        récupère les données depuis la base de données distante
+        retourne une liste de dictionnaires ayant pour clés : position, login, pseudo et user_id
+        """
+        classement = list()
+        cpt = 1
         try:
             conn = mysql.connector.connect(host='localhost', user='root', database='Spam_Tech')
         except Exception as ex:
             return False
         try:
             cursor = conn.cursor()
-            cursor.execute("select * from rs_rank")
+            cursor.execute(
+                "select players.login, players.nickname, rs_rank.playerid from players inner join rs_rank on (players.id = rs_rank.playerid);"
+            )
             rows = cursor.fetchall()
+            for row in rows:
+                classement.append(dict(position=cpt, login=row[0], pseudo=row[1], user_id=row[2]))
+                cpt += 1
         except Exception as exc:
             return False
         finally:
             conn.close()
-
+        return classement
 
 
 class EditionDemi(models.Model):
