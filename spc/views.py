@@ -12,8 +12,9 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.utils.translation import LANGUAGE_SESSION_KEY
 from django.views.generic import DetailView
-from spc.forms import LoginForm, UserRegistrationForm, UserEditForm, SubscribeForm, UnsubscribeForm
+from spc.forms import LoginForm, SubscribeForm, UnsubscribeForm
 from spc.models import Edition, EditionQualif, New, Rule
+from spc.color_parser import ColorParser
 import requests
 
 

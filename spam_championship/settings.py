@@ -1,3 +1,5 @@
+# coding: utf-8
+
 """
 Django settings for spam_championship project.
 
@@ -55,13 +57,16 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.staticfiles',
     'tinymce',
+    'spc',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'spc',
 ]
 
 SITE_ID = 1
+SOCIALACCOUNT_ADAPTER = 'spc.adapters.SocialAdapter'
+
+AUTH_USER_MODEL = 'spc.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -102,7 +107,7 @@ WSGI_APPLICATION = 'spam_championship.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'spc',
+        'NAME': 'spc2',
         'USER': 'spam_championship',
         'PASSWORD': 'spcroot',
         'HOST': 'localhost',
@@ -133,7 +138,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-AUTH_USER_MODEL = 'spc.User'
 LOGOUT_REDIRECT_URL = '/logged_out'
 
 # Static files (CSS, JavaScript, Images)

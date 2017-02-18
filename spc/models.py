@@ -15,6 +15,10 @@ def get_now():
     return datetime.now()
 
 
+class User(AbstractUser):
+    nickname = models.TextField(max_length=500)
+
+
 class New(models.Model):
 
     author_id = models.ForeignKey(settings.AUTH_USER_MODEL)
@@ -23,10 +27,6 @@ class New(models.Model):
     content_en = HTMLField()
     active = models.BooleanField(default=False)
     create_date = models.DateTimeField(default=get_now, editable=False)
-
-
-class User(AbstractUser):
-    login_trackmania = models.CharField(max_length=64, unique=True, blank=False)
 
 
 class Edition(models.Model):
@@ -124,6 +124,7 @@ class UserAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         obj.user = request.user
         super(UserAdmin, self).save_model(request, obj, form, change)
+
 
 class EditionQualifInline(admin.StackedInline):
     model = EditionQualif

@@ -12,7 +12,7 @@ html {
 }
 
 body {
-    background-color: #bfbfbf !important;
+    background-color: #dfdfdf !important;
     position: relative;
     margin: 0;
     padding-bottom: 12rem;
@@ -32,7 +32,7 @@ body {
 }
 
 .container {
-    width: 85% !important;
+    width: 90% !important;
     min-height: 60%;
 }
 
@@ -77,9 +77,9 @@ body {
 }
 
 .box-shadow {
-    background-color: #f0f0f0;
+    background-color: #fdfdfd;
     box-shadow: 1px 1px 5px #bbbbbb;
-    padding: 2%;
+    padding: 1% 2%;
     border-radius: 10px;
     min-height: 60% !important;
 }

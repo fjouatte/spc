@@ -2,7 +2,7 @@
 
 from django import forms
 from django.contrib import admin
-from spc.models import Rule, User, New
+from spc.models import Rule, New
 from tinymce.widgets import TinyMCE
 
 
@@ -18,7 +18,7 @@ class LoginForm(forms.Form):
     username = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput)
 
-
+"""
 class UserRegistrationForm(forms.ModelForm):
     email = forms.CharField(label='Email', widget=forms.EmailInput, )
     password = forms.CharField(label='Password', widget=forms.PasswordInput, min_length=6)
@@ -46,6 +46,8 @@ class UserEditForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('email', 'login_trackmania')
+"""
+
 
 class NewForm(forms.ModelForm):
 
