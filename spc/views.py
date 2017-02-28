@@ -16,6 +16,8 @@ from spc.forms import LoginForm, SubscribeForm, UnsubscribeForm
 from spc.models import Edition, EditionQualif, New, Rule
 from spc.color_parser import ColorParser
 import requests
+import mysql.connector
+
 
 
 def base(request):
@@ -45,10 +47,26 @@ def home(request):
 
 @login_required
 def unsubscribe(request):
+    """ Désincription d'un joueur à une édition
+        Le joueur est supprimé de l'édition et de la table 'authorized_player' (MySQL xaseco)
+        return False si une erreur se produit
+    """
     base_return_url = '/edition/'
     if request.method == 'POST':
         form = UnsubscribeForm(request.POST)
         if form.is_valid():
+            query = "delete from authorized_player where login = ('%s');" % (request.user.username)
+            try:
+                conn = mysql.connector.connect(host='localhost', user='root', database='Spam_Tech', password='cocorico')
+            except Exception as ex:
+                return False
+            try:
+                cursor = conn.cursor()
+                cursor.execute(query)
+            except Exception as ex:
+                return False
+            finally:
+                conn.close()
             cd = form.cleaned_data
             edition = Edition.objects.get(id=int(cd.get('edition_id')))
             edition.joueur_ids.remove(request.user.id)
@@ -58,10 +76,26 @@ def unsubscribe(request):
 
 @login_required
 def subscribe(request):
+    """ Inscription d'un joueur à une édition
+        Le joueur est ajouté à l'édition et à la table 'authorized_player' (MySQL xaseco)
+        return False si une erreur se produit
+    """
     base_return_url = '/edition/'
     if request.method == 'POST':
         form = SubscribeForm(request.POST)
         if form.is_valid():
+            query = "insert into authorized_player (login) VALUES ('%s');" % (request.user.username)
+            try:
+                conn = mysql.connector.connect(host='localhost', user='root', database='Spam_Tech', password='cocorico')
+            except Exception as ex:
+                return False
+            try:
+                cursor = conn.cursor()
+                cursor.execute(query)
+            except Exception as ex:
+                return False
+            finally:
+                conn.close()
             cd = form.cleaned_data
             edition = Edition.objects.get(id=int(cd.get('edition_id')))
             edition.joueur_ids.add(request.user.id)
@@ -90,7 +124,7 @@ def editions(request):
             if not classement:
                 values.update(erreur=True)
             else:
-                values.update(classement)
+                values.update(classement=classement)
         else:
             values.update(not_started=True)
     return render(
@@ -180,19 +214,19 @@ class LireEdition(DetailView):
             if not classement:
                 context.update(erreur=True)
             else:
-                paginator = Paginator(classement, 20)
+                paginator = Paginator(classement.ligneclassementqualif_set.all(), 20)
                 page = self.request.GET.get('page')
                 try:
-                    classement = paginator.page(page)
+                    ligneclassement = paginator.page(page)
                 except PageNotAnInteger:
                     # If page is not an integer, deliver first page.
-                    classement = paginator.page(1)
+                    ligneclassement = paginator.page(1)
                 except EmptyPage:
                     # If page is out of range (e.g. 9999), deliver last page of results.
-                    classement = paginator.page(paginator.num_pages)
-                    context.update(classement=classement)
+                    ligneclassement = paginator.page(paginator.num_pages)
         else:
             context.update(not_started=True)
+        context.update(ligneclassement=ligneclassement)
         return context
 
 

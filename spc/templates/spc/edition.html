@@ -50,28 +50,28 @@
             {% endif %}
             <table class="table table-striped">
                 <tr><th>Position</th><th>Login</th><th>Pseudo</th><th></th>
-                {% for line in classement %}
-                <tr><td>{{ line.position }}</td><td>{{ line.login }}</td><td>{{ line.pseudo }}</td></tr>
+                {% for line in ligneclassement %}
+                <tr><td>{{ line.position }}</td><td>{{ line.player_id.username }}</td><td>{{ line.player_id.nickname }}</td></tr>
                 {% empty %}
                 <p>Le classement n'est pas publié</p>
                 {% endfor %}
             </table>
-            {% if classement.has_other_pages %}
+            {% if ligneclassement.has_other_pages %}
             <ul class="pagination">
-                {% if classement.has_previous %}
-                <li><a href="?page={{ classement.previous_page_number }}">&laquo;</a></li>
+                {% if ligneclassement.has_previous %}
+                <li><a href="?page={{ ligneclassement.previous_page_number }}">&laquo;</a></li>
                 {% else %}
                 <li class="disabled"><span>&laquo;</span></li>
                 {% endif %}
-                {% for i in classement.paginator.page_range %}
-                {% if classement.number == i %}
+                {% for i in ligneclassement.paginator.page_range %}
+                {% if ligneclassement.number == i %}
                 <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
                 {% else %}
                 <li><a href="?page={{ i }}">{{ i }}</a></li>
                 {% endif %}
                 {% endfor %}
-                {% if classement.has_next %}
-                <li><a href="?page={{ classement.next_page_number }}">&raquo;</a></li>
+                {% if ligneclassement.has_next %}
+                <li><a href="?page={{ ligneclassement.next_page_number }}">&raquo;</a></li>
                 {% else %}
                 <li class="disabled"><span>&raquo;</span></li>
                 {% endif %}
